@@ -5,7 +5,7 @@ import os
 import json
 from dotenv import load_dotenv
 
-# При наличии файла .env загружаем из него переменные окружения
+# При наличии файла env загружаем из него переменные окружения
 dotenv_path = os.path.join(os.path.dirname(__file__), 'env')   #.env
 if os.path.exists(dotenv_path):
     print("Загружаем переменные окружения из файла: {}".format(dotenv_path))
@@ -16,6 +16,7 @@ def get_variable_name(variable):
     """
     Возвращает имя переменной как строку.
     Если переменная по имени не найдена, возвращает None
+
     :param variable: переменная
     :return: имя переменной
     """
@@ -103,10 +104,14 @@ EMB_PATH = get_value_from_env("EMB_PATH", default_value='data')  # общая п
 ALLOWED_IMAGES = ['.jpg', '.jpeg', '.png']
 ALLOWED_TYPES = ALLOWED_IMAGES
 
+# Словарь для хранения ссылок на необходимые файлы
+URL_files_dict = {}
 
 # ################## ПАРАМЕТРЫ МОДЕЛЕЙ ####################
 # Модель CNN экстрактора фич для вызова из opencv
 MODEL_DNN_FILE_fe = 'models/vgg16fe.onnx'
+URL_files_dict[MODEL_DNN_FILE_fe] = 'https://s290vlx.storage.yandex.net/rdisk/527280a9d353a1227468bd9241064649acc7fca9a3f744406339f3d26a0d0c65/672f8f39/hnpF4eIlWdca4mgMPGLVBtUnrzMiYsMLzJrND4lL97oCIDgb4dyizsfjWRl-T4U-pJdD0LLWzzGgqv9v4MgibQ==?uid=271816632&filename=vgg16fe.onnx&disposition=attachment&hash=&limit=0&content_type=application%2Foctet-stream&owner_uid=271816632&fsize=537054812&hid=e4468c65cb40ce4c40a0ee13458ee7c3&media_type=data&tknv=v2&etag=099b5dc7eca72d3a908546a80981b568&ts=6267d73278040&s=63db6a02eb3210169b33ea806e685dbd385919d1f46c9a8f47ed59ba8205d4e7&pb=U2FsdGVkX1-TG4PQ-TYkURIUc1UGERj-YgYFMR1JeTRuJMAuepzlHU6VIPZNPev7xTi_lH0fbaqKiTeL5iuyOptDybwJWk5t8TK1O7_sRJs'
+#
 FORCE_CUDA_fe = False
 INPUT_HEIGHT_fe = 224
 INPUT_WIDTH_fe = 224
@@ -116,10 +121,10 @@ N_votes_fe = 10
 CONFIDENCE_THRESHOLD_votes = 0.40
 
 # Папки с данными/эмбеддингами внутри папки EMB_PATH
-CNNFE_DATA_checkboxes = os.path.join(EMB_PATH, "masks")
+CNNFE_DATA_default = os.path.join(EMB_PATH, "masks")
 
 # Использовать данный датасет (применяется для указания где пересчитывать эмбеддинги или производить классификацию)
-EMB_PATH_HANDLE = get_value_from_env("EMB_PATH_HANDLE", default_value=CNNFE_DATA_checkboxes)
+EMB_PATH_HANDLE = get_value_from_env("EMB_PATH_HANDLE", default_value=CNNFE_DATA_default)
 
 # Собирать результаты предиктов классификатора в новый датасет
 CNNFE_DATA_COLLECT = get_value_from_env("CNNFE_DATA_COLLECT", default_value=False)

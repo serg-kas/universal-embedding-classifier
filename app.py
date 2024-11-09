@@ -9,21 +9,21 @@ from PIL import Image
 import os
 import sys
 import time
-from datetime import datetime
+# from datetime import datetime
 # import shutil
-import requests
+# import requests
 # import magic
 # import threading
-import io
-import json
-import base64
-from pprint import pprint
+# import io
+# import json
+# import base64
+# from pprint import pprint
 
 #
 import config
-import log
+# import log
 import settings as s
-import tools as t
+# import tools as t
 import helpers.classify_cnnfe as cnnfe
 import helpers.dnn as dnn
 import helpers.utils as u
@@ -47,6 +47,7 @@ def process(operation_mode, source_files, out_path):
     """
     Функция запуска рабочего процесса по выбранному
     режиму работы
+
     :param operation_mode: режим работы
     :param source_files: список файлов для обработки
     :param out_path: путь для сохранения результата
@@ -61,8 +62,6 @@ def process(operation_mode, source_files, out_path):
             operation_mode = curr_mode
             break
     print('Режим работы, заданный в параметрах командной строки: {}'.format(operation_mode))
-
-
 
     # ##################### rebuild_emb #######################
     # Пересчитываются и сохраняются эмбеддинги датасета.
@@ -167,7 +166,10 @@ def process(operation_mode, source_files, out_path):
 
 
 
-
+    #
+    time_end = time.time()
+    if s.VERBOSE:
+        print("Общее время выполнения: {:.1f} с.".format(time_end - time_start))
 
 
 if __name__ == '__main__':
@@ -179,9 +181,16 @@ if __name__ == '__main__':
     """
 
     # Проверим наличие и создадим рабочие папки если их нет
-    config.check_folders([s.SOURCE_PATH, s.OUT_PATH, s.MODELS_PATH, s.EMB_PATH],
+    config.check_folders([s.SOURCE_PATH,
+                          s.OUT_PATH,
+                          s.MODELS_PATH,
+                          s.EMB_PATH],
                          verbose=s.VERBOSE)
 
+    # Проверим наличие и скачаем файлы если их нет
+    config.check_files([s.MODEL_DNN_FILE_fe],
+                         verbose=s.VERBOSE)
+    exit(77)
     # Параметры командной строки
     OPERATION_MODE = default_mode if len(sys.argv) <= 1 else sys.argv[1]
     SOURCE = s.SOURCE_PATH if len(sys.argv) <= 2 else sys.argv[2]

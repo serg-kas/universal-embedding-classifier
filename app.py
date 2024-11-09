@@ -190,7 +190,7 @@ if __name__ == '__main__':
     # Проверим наличие и скачаем файлы если их нет
     config.check_files([s.MODEL_DNN_FILE_fe],
                          verbose=s.VERBOSE)
-    exit(77)
+
     # Параметры командной строки
     OPERATION_MODE = default_mode if len(sys.argv) <= 1 else sys.argv[1]
     SOURCE = s.SOURCE_PATH if len(sys.argv) <= 2 else sys.argv[2]

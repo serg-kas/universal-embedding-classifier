@@ -107,10 +107,16 @@ ALLOWED_TYPES = ALLOWED_IMAGES
 # Словарь для хранения ссылок на необходимые файлы
 URL_files_dict = {}
 
-# ################## ПАРАМЕТРЫ МОДЕЛЕЙ ####################
+
+# #############################################################
+#                     ПАРАМЕТРЫ МОДЕЛЕЙ
+# #############################################################
+
 # Модель CNN экстрактора фич для вызова из opencv
 MODEL_DNN_FILE_fe = 'models/vgg16fe.onnx'
-URL_files_dict[MODEL_DNN_FILE_fe] = 'https://s290vlx.storage.yandex.net/rdisk/527280a9d353a1227468bd9241064649acc7fca9a3f744406339f3d26a0d0c65/672f8f39/hnpF4eIlWdca4mgMPGLVBtUnrzMiYsMLzJrND4lL97oCIDgb4dyizsfjWRl-T4U-pJdD0LLWzzGgqv9v4MgibQ==?uid=271816632&filename=vgg16fe.onnx&disposition=attachment&hash=&limit=0&content_type=application%2Foctet-stream&owner_uid=271816632&fsize=537054812&hid=e4468c65cb40ce4c40a0ee13458ee7c3&media_type=data&tknv=v2&etag=099b5dc7eca72d3a908546a80981b568&ts=6267d73278040&s=63db6a02eb3210169b33ea806e685dbd385919d1f46c9a8f47ed59ba8205d4e7&pb=U2FsdGVkX1-TG4PQ-TYkURIUc1UGERj-YgYFMR1JeTRuJMAuepzlHU6VIPZNPev7xTi_lH0fbaqKiTeL5iuyOptDybwJWk5t8TK1O7_sRJs'
+MODEL_DNN_FILE_fe_URL = get_value_from_env("MODEL_DNN_FILE_FE_URL", default_value='')
+URL_files_dict[MODEL_DNN_FILE_fe] = MODEL_DNN_FILE_fe_URL
+
 #
 FORCE_CUDA_fe = False
 INPUT_HEIGHT_fe = 224
@@ -123,7 +129,7 @@ CONFIDENCE_THRESHOLD_votes = 0.40
 # Папки с данными/эмбеддингами внутри папки EMB_PATH
 CNNFE_DATA_default = os.path.join(EMB_PATH, "masks")
 
-# Использовать данный датасет (применяется для указания где пересчитывать эмбеддинги или производить классификацию)
+# Использовать данный датасет (применяется для указания где производить классификацию)
 EMB_PATH_HANDLE = get_value_from_env("EMB_PATH_HANDLE", default_value=CNNFE_DATA_default)
 
 # Собирать результаты предиктов классификатора в новый датасет
@@ -133,7 +139,6 @@ CNNFE_DATA_COLLECT_limit = 0  # 0 = не ограничивать количес
 
 # Параметры режима пересчета эмбеддингов (rebuild_emb)
 FORCE_PREPROCESS_IMG = get_value_from_env("FORCE_PREPROCESS_IMG", default_value=False, verbose=False)
-PREP_SCATTER_ONLY = get_value_from_env("PREP_SCATTER_ONLY", default_value=False, verbose=False)
 FOLDERS_TO_PROCESS = get_value_from_env("FOLDERS_TO_PROCESS", default_value=[], verbose=False)
 
 

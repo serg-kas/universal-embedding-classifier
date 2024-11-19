@@ -38,6 +38,7 @@ print("Рабочая директория (полный путь): {}".format(w
 # ##################### РЕЖИМЫ РАБОТЫ #########################
 operation_mode_list = [
                        'rebuild_emb',
+                       'create_scatter',
                        'cnnfe_classifier',
                        ]
 default_mode = operation_mode_list[-1]  # режим работы по умолчанию
@@ -106,6 +107,31 @@ def process(operation_mode, source_files, out_path):
         all_embeddings, class_pointers = cnnfe.collect_embeddings(data_folders)
         # Создадим скаттер
         cnnfe.create_tsne_scatter(labels, all_embeddings, class_pointers)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     # ################### cnnfe_classifier ####################
     # Универсальный CNNfe классификатор.

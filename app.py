@@ -18,7 +18,6 @@ import time
 # import json
 # import base64
 # from pprint import pprint
-
 #
 import config
 # import log
@@ -64,6 +63,7 @@ def process(operation_mode, source_files, out_path):
             break
     print('Режим работы, заданный в параметрах командной строки: {}'.format(operation_mode))
 
+
     # ##################### rebuild_emb #######################
     # Пересчитываются и сохраняются эмбеддинги датасета.
     # Работает в датасете EMB_PATH_HANDLE
@@ -73,8 +73,6 @@ def process(operation_mode, source_files, out_path):
         print("Работаем в датасете {}".format(s.EMB_PATH_HANDLE))
         assert os.path.isdir(s.EMB_PATH_HANDLE), "Датасет {} не найден".format(s.EMB_PATH_HANDLE)
 
-        # True - создать скаттер, не пересчитывая эмбеддинги
-        prep_scatter_ONLY = s.PREP_SCATTER_ONLY
         # Пересчитывать эмбеддинги выборочно, только в указанных папках (если список пуст, то пересчитывать всё)
         folders_to_process = s.FOLDERS_TO_PROCESS
 
@@ -89,7 +87,7 @@ def process(operation_mode, source_files, out_path):
                     labels.append(f)
         print("Всего папок для обработки: {}".format(len(data_folders)))
         #
-        if not prep_scatter_ONLY:
+        if True:
             # Получаем модель
             model_fe = dnn.get_model_dnn(s.MODEL_DNN_FILE_fe, force_cuda=s.FORCE_CUDA_fe, verbose=s.VERBOSE)
 
@@ -103,34 +101,34 @@ def process(operation_mode, source_files, out_path):
             # Создаем эмбеддинги всего датасета
             cnnfe.create_embeddings(model_fe, data_folders, preprocess=True, preprocess_func=preprocess_function)
 
+
+    # ################### create_scatter ######################
+    # Создает диаграмму Scatter
+    # Работает в датасете EMB_PATH_HANDLE
+    # #########################################################
+    if operation_mode == 'create_scatter':
+        # Обрабатывать папку
+        print("Работаем в датасете {}".format(s.EMB_PATH_HANDLE))
+        assert os.path.isdir(s.EMB_PATH_HANDLE), "Датасет {} не найден".format(s.EMB_PATH_HANDLE)
+
+        # Пересчитывать эмбеддинги выборочно, только в указанных папках (если список пуст, то пересчитывать всё)
+        folders_to_process = s.FOLDERS_TO_PROCESS
+
+        # Список папок для обработки
+        data_folders = []  # полные пути к папкам
+        labels = []        # имена папок - это метки классов
+        for f in sorted(os.listdir(s.EMB_PATH_HANDLE)):
+            if os.path.isdir(os.path.join(s.EMB_PATH_HANDLE, f)):
+                if (f in folders_to_process) or (len(folders_to_process) == 0):
+                    print("  подключаем папку: {}".format(f))
+                    data_folders.append(os.path.join(s.EMB_PATH_HANDLE, f))
+                    labels.append(f)
+        print("Всего папок для обработки: {}".format(len(data_folders)))
+
         # Пройдем по сохраненным эмбеддингам и соберем их в один массив
         all_embeddings, class_pointers = cnnfe.collect_embeddings(data_folders)
         # Создадим скаттер
         cnnfe.create_tsne_scatter(labels, all_embeddings, class_pointers)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     # ################### cnnfe_classifier ####################
@@ -189,8 +187,6 @@ def process(operation_mode, source_files, out_path):
             out_file_name = os.path.join(out_path, 'pred_' + pred_final + '_(' + str(counter) + ')' + '.png')
             cv.imwrite(out_file_name, img_parsed)
             counter += 1
-
-
 
     #
     time_end = time.time()

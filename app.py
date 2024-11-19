@@ -19,11 +19,10 @@ import time
 # import base64
 # from pprint import pprint
 #
+import classify_cnnfe as cnnfe
 import config
-# import log
 import settings as s
-# import tools as t
-import helpers.classify_cnnfe as cnnfe
+import workflow as w
 import helpers.dnn as dnn
 import helpers.utils as u
 
@@ -161,8 +160,7 @@ def process(operation_mode, source_files, out_path):
         if len(img_file_list) < 1:
             print("Не нашли изображений для обработки")
 
-        img_list = w.get_images(img_file_list, autorotate=None, verbose=s.VERBOSE)
-        # img_list = w.get_images(img_file_list, autorotate='TESS', verbose=s.VERBOSE)
+        img_list = w.get_images_simple(img_file_list, verbose=s.VERBOSE)
 
         counter = 0
         for img in img_list:

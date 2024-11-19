@@ -28,8 +28,8 @@ import base64
 import re
 from pprint import pprint, pformat
 #
+# from classify_cnnfe import Classifier
 import settings as s
-from helpers.classify_cnnfe import Classifier
 # import helpers.dnn as dnn
 import helpers.utils as u
 

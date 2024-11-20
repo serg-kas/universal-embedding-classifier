@@ -10,14 +10,14 @@ import cv2 as cv
 # from fpdf import FPDF                                        # pip install fpdf2 (создание pdf)
 # import fitz                                                  # pip install PyMuPDF (разбиение на страницы, рендеринг)
 #
-import io
-import os
-import sys
+# import io
+# import os
+# import sys
 import time
 # from multiprocessing import Process, Queue
 #
-import json
-import base64
+# import json
+# import base64
 # import requests
 # import magic
 # import pika
@@ -25,8 +25,8 @@ import base64
 #
 # import pytesseract                                           # sudo apt install tesseract-ocr
 # import Levenshtein
-import re
-from pprint import pprint, pformat
+# import re
+# from pprint import pprint, pformat
 #
 # from classify_cnnfe import Classifier
 import settings as s
@@ -44,13 +44,13 @@ turquoise = s.turquoise
 white = s.white
 
 
-def get_images_simple(source_files, autorotate=None, verbose=False):
+def get_images_simple(source_files, bgr_to_rgb=None, verbose=False):
     """
     По списку файлов считывает изображения и возвращает их списком.
     Упрощенный вариант без авторотации
 
     :param source_files: список файлов с полными путями к ним
-    :param autorotate: вращать изображение при необходимости (возможные значения: None, TESS, QR)
+    :param bgr_to_rgb: преобразовывать цветное изображение в RGB
     :param verbose: выводить подробные сообщения
     :return: список изображений
     """
@@ -63,15 +63,11 @@ def get_images_simple(source_files, autorotate=None, verbose=False):
         for f in source_files:
             img = cv.imread(f)
             if img is None:
-                print("  Ошибка чтения файла: {} ".format(f))
-                # Создаем фейковую картинку и сохраняем ее
-                img_fake = u.get_blank_img_cv(s.SCAN_MAX_SIZE, s.SCAN_MIN_SIZE, s.white,
-                                              "Missing file: {}".format(f))
-                cv.imwrite(f, img_fake)
-                result.append(img_fake)
+                if verbose:
+                    print("  Ошибка чтения файла: {} ".format(f))
                 continue
-            # img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
-
+            if bgr_to_rgb:
+                img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
             result.append(img)
 
     time_1 = time.perf_counter()

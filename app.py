@@ -19,7 +19,8 @@ import time
 # import base64
 # from pprint import pprint
 #
-import classify_cnnfe as cnnfe
+# from classifier.classify_cnnfe import Classifier
+import classifier.classify_cnnfe as cnnfe
 import config
 import settings as s
 import workflow as w

@@ -70,8 +70,14 @@ def get_value_from_env(variable, default_value=None, prefix_name="APP_", verbose
                 print("  Не удалось прочитать как список: {}".format(value))
         #
         if verbose:
-            print("  Получили значение из переменной окружения: {}={}".format(variable_name, value))
-            # print(variable_name, value, type(value)))
+            if hasattr(value, '__len__'):
+                if len(value) >= 64:
+                    print("  Получили значение из переменной окружения: {}={} ... ".format(variable_name, value[:64]))
+                    # print(variable_name, value, type(value)))
+                else:
+                    print("  Получили значение из переменной окружения: {}={}".format(variable_name, value))
+            else:
+                print("  Получили значение из переменной окружения: {}={}".format(variable_name, value))
         return value
     else:
         if got_variable:
